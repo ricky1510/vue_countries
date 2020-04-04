@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="static/css/reset-min.css">
+	<link rel="stylesheet" href="static/css/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,200;0,700;1,500&display=swap" rel="stylesheet">
+	<script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+	<div id="app" :class="{m__darkmode:darkmode}">
+		<div class="top-bar">
+			<h1 class="page-title">Where in the world?</h1>
+			<button class="dark-mode__btn" @click="darkmode = !darkmode">
+				<span class="dark-mode__icon-wrapper">
+					<i data-feather="moon"></i>
+				</span>
+				Dark mode
+			</button>
+		</div>
+		<div class="filter-bar">
+			<div class="search__wrapper">
+				<div class="search-icon__wrapper">
+					<i data-feather="search"></i>
+				</div>
+				<input class="search__input" placeholder="Search for a country" type="text">
+			</div>
+			<div class="filter__wrapper">
+				filter
+			</div>
+		</div>
+		<ul class="countries">
+			<li class="country" v-for="country in countries">
+				<img class="flag" v-bind:src="country.flag" />
+				<div class="details">
+					<h2 class="country-name">{{ country.name }}</h2>
+					<div class="country-population">
+						<span class="bold">Population:</span>
+						{{ country.population }}
+					</div>
+					<div class="country-region">
+						<span class="bold">Region:</span>
+						{{ country.region }}
+					</div>
+					<div class="country-capital">
+						<span class="bold">Capital:</span>
+						{{ country.capital }}
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		const app = new Vue({
+			el: '#app',
+			data: {
+				countries: [],
+				darkmode: false,
+			},
+			created () {
+				fetch('https://restcountries.eu/rest/v2/all')
+					.then(response => response.json())
+					.then(json => {
+						console.log(json);
+						this.countries = json
+					})
+			}
+		})
+		feather.replace()
+	</script>
+</body>
+</html>
